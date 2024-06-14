@@ -4,23 +4,51 @@ import 'package:crud_firebase_notes_app/shared/form_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum NoteFormNames { title, note }
+enum NoteFormNames { id, title, note }
 
 class NoteForm extends StatefulWidget {
   const NoteForm({
     super.key,
-  });
+    this.id,
+    this.note,
+  }) : assert((id == null && note == null) || (id != null && note != null));
+
+  final String? id;
+  final NoteModel? note;
 
   @override
   State<NoteForm> createState() => _NoteFormState();
 }
 
 class _NoteFormState extends State<NoteForm> {
-  final _formMap = FormMap<NoteFormNames>();
+  late final FormMap<NoteFormNames> _formMap;
+
+  @override
+  void initState() {
+    if (widget.note == null) {
+      _formMap = FormMap<NoteFormNames>();
+    } else {
+      final map = widget.note!.toMap();
+      map['id'] = widget.id;
+      _formMap = FormMap<NoteFormNames>.fromDataMap(
+        enumValues: NoteFormNames.values,
+        dataMap: map,
+      );
+    }
+    super.initState();
+  }
+
   _handleFormSubmit(Map<String, dynamic> data) {
-    context.read<NotesRepository>().addNote(
-          NoteModel.fromFormMap(data),
-        );
+    final noteData = NoteModel.fromFormMap(data);
+    if (widget.id != null) {
+      context.read<NotesRepository>().updateNote(
+            widget.id!,
+            newNote: noteData.note,
+            newTitle: noteData.title,
+          );
+    } else {
+      context.read<NotesRepository>().addNote(NoteModel.fromFormMap(data));
+    }
 
     Navigator.of(context).pop();
   }
@@ -65,7 +93,9 @@ class _NoteFormState extends State<NoteForm> {
                     child: const Text("Cancle")),
                 TextButton(
                     onPressed: () => _formMap.submit(_handleFormSubmit),
-                    child: const Text("Create")),
+                    child: widget.id != null
+                        ? const Text("Update")
+                        : const Text("Create")),
               ],
             )
           ],
