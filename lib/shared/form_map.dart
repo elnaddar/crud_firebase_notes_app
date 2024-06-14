@@ -19,14 +19,16 @@ class FormMap<T extends Enum> {
     GlobalKey<FormState>? key,
     required Iterable<T> enumValues,
     required Map<String, dynamic> dataMap,
+    bool throwErrorIfNoName = false,
   }) {
     final obj = FormMap<T>(key: key);
     final enumMap = enumValues.asNameMap();
+
     for (final entry in dataMap.entries) {
       if (enumMap[entry.key] != null) {
         final T entryKey = enumMap[entry.key]!;
         obj[entryKey] = entry.value;
-      } else {
+      } else if (throwErrorIfNoName) {
         throw ArgumentError.value(
             entry.key, "name", "No enum value with that name");
       }
