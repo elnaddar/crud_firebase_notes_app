@@ -15,4 +15,16 @@ class NotesRepository {
   Stream<QuerySnapshot> getNotesStream() {
     return _notes.orderBy('timestamp', descending: true).snapshots();
   }
+
+  Future<void> updateNote(String docId, {String? newTitle, String? newNote}) {
+    assert(newNote == null && newNote == null);
+    final Map<Object, Object?> mp = {};
+    if (newTitle != null) {
+      mp['title'] = newTitle;
+    }
+    if (newNote != null) {
+      mp['title'] = newNote;
+    }
+    return _notes.doc(docId).update(mp);
+  }
 }
