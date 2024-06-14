@@ -11,4 +11,8 @@ class NotesRepository {
   Future<void> addNote(NoteModel note) {
     return _notes.add(note.toMap());
   }
+
+  Stream<QuerySnapshot> getNotesStream() {
+    return _notes.orderBy('timestamp', descending: true).snapshots();
+  }
 }
