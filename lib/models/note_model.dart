@@ -32,7 +32,9 @@ class NoteModel {
 
   factory NoteModel.fromMap(Map<String, dynamic> map) {
     return NoteModel(
-      title: map['title'] != null ? map['title'] as String : null,
+      title: map['title'] != null && (map['title'] as String).trim().isNotEmpty
+          ? map['title'] as String
+          : null,
       note: map['note'] as String,
       timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp'] as int),
     );
