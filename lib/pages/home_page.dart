@@ -26,6 +26,32 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _deleteNote(String id) {
+    showAdaptiveDialog(
+      context: context,
+      builder: (context) => AlertDialog.adaptive(
+        title: const Text("Deleting a note"),
+        content: const Text("Are you sure you want to delete this note?"),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            onPressed: () {
+              context.read<NotesRepository>().deleteNote(id);
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancle"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +81,18 @@ class _HomePageState extends State<HomePage> {
                 return ListTile(
                   title: Text(note.title ?? note.note),
                   subtitle: note.title != null ? Text(note.note) : null,
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _openNoteForm(id: id, note: note),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => _openNoteForm(id: id, note: note),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => _deleteNote(id),
+                      ),
+                    ],
                   ),
                 );
               },
