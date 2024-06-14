@@ -27,4 +27,6 @@ class NotesRepository {
     }
     return _notes.doc(docId).update(mp);
   }
+
+  Future<void> deleteNote(String docId) => _notes.doc(docId).delete();
 }
