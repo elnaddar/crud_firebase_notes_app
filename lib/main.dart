@@ -24,8 +24,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "CRUD Firebase Notes",
       debugShowCheckedModeBanner: false,
       routes: routes,
+      onGenerateRoute: onGenerateRoute,
     );
   }
 }
