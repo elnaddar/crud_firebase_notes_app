@@ -38,6 +38,13 @@ class NoteModel {
     );
   }
 
+  factory NoteModel.fromFormMap(Map<String, dynamic> map) {
+    return NoteModel(
+      title: map['title'] != null ? map['title'] as String : null,
+      note: map['note'] as String,
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
   factory NoteModel.fromJson(String source) =>
