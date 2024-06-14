@@ -13,6 +13,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return NoteForm(
+          id: args['id'],
           note: args['note'],
         );
       },
