@@ -13,12 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _createNewNote() {
+  void _openNoteForm({String? id, NoteModel? note}) {
     showAdaptiveDialog(
       context: context,
-      builder: (context) => const AlertDialog.adaptive(
-        title: Text("Add new note"),
-        content: NoteForm(),
+      builder: (context) => AlertDialog.adaptive(
+        title: const Text("Add new note"),
+        content: NoteForm(
+          id: id,
+          note: note,
+        ),
       ),
     );
   }
@@ -30,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Notes"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _createNewNote,
+        onPressed: _openNoteForm,
         child: const Icon(Icons.add),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -46,10 +49,16 @@ class _HomePageState extends State<HomePage> {
               itemCount: notesList.length,
               itemBuilder: (context, index) {
                 final DocumentSnapshot doc = notesList[index];
+                final id = doc.id;
                 final data = doc.data() as Map<String, dynamic>;
                 final note = NoteModel.fromMap(data);
                 return ListTile(
                   title: Text(note.title ?? note.note),
+                  subtitle: note.title != null ? Text(note.note) : null,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _openNoteForm(id: id, note: note),
+                  ),
                 );
               },
             );
