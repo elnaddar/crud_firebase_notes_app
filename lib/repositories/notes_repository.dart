@@ -17,13 +17,13 @@ class NotesRepository {
   }
 
   Future<void> updateNote(String docId, {String? newTitle, String? newNote}) {
-    assert(newNote == null && newNote == null);
+    assert(newNote != null || newNote != null);
     final Map<Object, Object?> mp = {};
     if (newTitle != null) {
       mp['title'] = newTitle;
     }
     if (newNote != null) {
-      mp['title'] = newNote;
+      mp['note'] = newNote;
     }
     return _notes.doc(docId).update(mp);
   }
