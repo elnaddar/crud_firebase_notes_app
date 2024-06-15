@@ -1,8 +1,8 @@
 import 'package:crud_firebase_notes_app/models/note_model.dart';
 import 'package:crud_firebase_notes_app/repositories/notes_repository.dart';
-import 'package:crud_firebase_notes_app/shared/form_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_map/form_map.dart';
 
 enum NoteFormNames { id, title, note }
 

@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  form_map: ^0.0.3
 
 dev_dependencies:
   flutter_test:
